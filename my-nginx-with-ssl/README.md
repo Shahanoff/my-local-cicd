@@ -93,46 +93,5 @@ sudo systemctl restart httpd or restart the deployment in the k3s cluster
 
 If you do everything locally, do not forget to update the record on the local `DNS` or `/etc/hosts`
 
-## Architecture Diagram
 
-```
-                Cert-Manager Objects                        Nginx1 Objects
-
-               ┌───────────────────────────┐                    ┌─────────────────────────────────────┐
-Created CA     │ kind: Secret              │                    │                                     │
-private key ──►│ name: test-nginx-ca-secret│◄───────────┐       │ kind: Ingress                       │
-and cert       │ tls.key: **priv key**     │         	│       │ name: test-nginx-ingress            │
-               │ tls.crt: **cert**         │         	│       │ tls:                                │
-               └───────────────────────────┘        	│       │   - hosts:                          │
-                                                        │       │     - mynginx.local.home            │
-               ┌──────────────────────────────────┐     │  ┌────┼───secretName: test-nginx-tls-secret │
-               │                                  │     │  │    │                                     │
-               │ kind: ClusterIssuer              │     │  │    └─────────────────────────────────────┘
-           ┌───┤►name: test-nginx-clusterissuer   │     │  │
-           │   │ secretName: test-nginx-ca-secret─┼─────┘  │
-           │   │                                  │        │
-           │   └──────────────────────────────────┘        │
-           │                                          	   │
-           │   ┌───────────────────────────────────┐       │
-           │   │                                   │   	   │
-           │   │ kind: Certificate                 │       │
-           │   │ name: test-nginx-cert             │       │
-           └───┼─issuerRef:                        │       │
-               │   name: test-nginx-clusterissuer  │       │
-               │   kind: ClusterIssuer             │       │
-               │ dnsNames:                         │       │
-               │   - mynginx.local.home            │       │
-           ┌───┼─secretName: test-nginx-tls-secret │       │
-           │   │                                   │       │
-           │   └──────────┬────────────────────────┘       │
-           │              │                                │
-           │              │ will be created                │
-           │              ▼ and managed automatically      │
-           │   ┌───────────────────────────────┐           │
-           │   │                               │           │
-           │   │ kind: Secret                  │           │
-           └───┤►name: test-nginx-tls-secret◄──┼───────────┘
-               │                               │
-               └───────────────────────────────┘
-```
 
