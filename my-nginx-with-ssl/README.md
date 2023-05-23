@@ -36,9 +36,9 @@ cat ca.crt | base64 -w 0
 cat ca.key | base64 -w 0
 ```
 
-================================================================================
-Now let's create manifest files to run nginx with TLS
-================================================================================
+
+## Now let's create manifest files to run nginx with TLS
+
 
 1. Create the file `nginx1-ca-secret.yml` and paste the converted text into
 
@@ -49,7 +49,7 @@ tls.crt: # content of ca.crt (converted to base64)
 tls.key: # content of ca.key (converted to base64)
 ```
 
-!! Make sure that secret is in the same namespace as cent-manager
+#### !! Make sure that secret is in the same namespace as cent-manager
 
 2. Create a `cluster issuer` object using `test-nginx-clusterissuer.yml`
 
@@ -63,7 +63,7 @@ tls.key: # content of ca.key (converted to base64)
 
 7. Apply the manifest files `deployment`, `service`, and `Middleware' (for redirecting http to https)
 
-(!! Be careful when copying the key, it sometimes does not highlight the '=' character at the end)
+####  !! Be careful when copying the key, it sometimes does not highlight the '=' character at the end
 
 In order to be able to log in from all nodes via https and use the certificate accordingly, it is necessary (`CentOS7')
 
