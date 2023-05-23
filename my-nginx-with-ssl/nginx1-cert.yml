@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: test-nginx-cert
+  namespace: test-nginx
+spec:
+  secretName: test-nginx-tls-secret
+  issuerRef:
+    name: test-nginx-clusterissuer
+    kind: ClusterIssuer
+  dnsNames:
+    - mynginx.local.home

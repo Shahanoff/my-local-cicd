@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: test-nginx-ingress
+  namespace: test-nginx
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+    traefik.ingress.kubernetes.io/router.middlewares: test-nginx-redirecttohttps@kubernetescrd
+spec:
+  rules:
+  - host: "mynginx.local.home"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: test-nginx-svc 
+            port:
+              number: 80 
+  tls:
+  - hosts:
+    - mynginx.local.home
+    secretName: test-nginx-tls-secret
